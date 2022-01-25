@@ -84,7 +84,7 @@ export default function Home() {
 					>
 						{username}
 					</Text>
-					<Link href={"/repos/" + username}>
+					<Link href={"/" + username}>
 						<a className="photo--alt">
 							🔗Repositórios
 						</a>
