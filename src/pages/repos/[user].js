@@ -6,7 +6,7 @@ import appConfig from "../../../config.json";
 import { Icon } from '@skynexui/components';
 import Link from 'next/link';
 
-export default function repos() {
+export default function Repos() {
    const router = useRouter()
    const {user} = router.query
    console.log(user)
@@ -16,7 +16,6 @@ export default function repos() {
    
    React.useEffect(() => {
       if(!router.isReady) return;
-      console.log(user)
       githubApi.get(`/${user}/repos`)
       .then(({data}) => {
          setRepos(data)
@@ -43,7 +42,7 @@ export default function repos() {
             </Link>
             <ul>
                {repos.map((repo) => {
-                  return <li key={repo.id}><a href={repo.html_url} target="_blank">{repo.name}</a></li>
+                  return <li key={repo.id}><a href={repo.html_url} target="_blank" rel="noreferrer">{repo.name}</a></li>
                })}
             </ul>
          </>

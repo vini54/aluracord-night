@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import appConfig from "../../config.json";
 
-export default function Layout({children}) {
+export default function Layout ({ children }) {
   return (
    <Container className='background'>
       <Box className="box">
@@ -14,12 +14,12 @@ export default function Layout({children}) {
 };
 
 
-export const Container = styled.div`
+const Container = styled.div`
    height: 100%;
    display: flex;
    align-items: center;
    justify-content: center;
-   background-image: url(/background.jpg);
+   background-image: url("/background.jpg");
    background-position: center;
    background-repeat: no-repeat;
    background-size: cover;

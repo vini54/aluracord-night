@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Home() {
 	const [username, setUsername] = React.useState("vini54");
-	const [avatar, setAvatar] = React.useState("/defaultAvatar.png")
+	const [avatar, setAvatar] = React.useState("/defaultAvatar.png");
 
 	React.useEffect(() => {
 		setAvatar("/defaultAvatar.png")
@@ -75,6 +75,7 @@ export default function Home() {
 				<Image
 					className="photo--image"
 					src={avatar}
+					alt="avatar"
 				/>
 				<div className="photo--altDiv">
 					<Text
