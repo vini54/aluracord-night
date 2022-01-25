@@ -6,9 +6,7 @@ import appConfig from "../../config.json";
 export default function Layout ({ children }) {
   return (
    <Container className='background'>
-      <Box className="box">
-         {children}
-      </Box>
+      <Box className="box">{children}</Box>
    </Container>
   )
 };

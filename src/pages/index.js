@@ -85,13 +85,9 @@ export default function Home() {
 						{username}
 					</Text>
 					<Link href={"/repos/" + username}>
-						<Text
-							tag="a"
-							variant="body4"
-							className="photo--alt"
-						>
+						<a className="photo--alt">
 							🔗Repositórios
-						</Text>
+						</a>
 					</Link>
 				</div>
 			</Box>
@@ -160,6 +156,11 @@ width: 100%;
 	background-color: ${appConfig.theme.colors.neutrals[900]};
 	padding: 3px 10px;
 	border-radius: 1000px;
+}
+a.photo--alt{
+	text-decoration: none;
+	font-size: 12px;
+   font-weight: 400;
 }
 .photo--alt:nth-child(2){
 	cursor: pointer;
