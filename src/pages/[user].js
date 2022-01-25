@@ -6,7 +6,7 @@ import appConfig from "../../config.json";
 import { Icon } from '@skynexui/components';
 import Link from 'next/link';
 
-export default function Repos() {
+export default function User() {
    const router = useRouter()
    const {user} = router.query
    console.log(user)
