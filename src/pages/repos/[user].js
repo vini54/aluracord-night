@@ -52,7 +52,7 @@ export default function Repos() {
 }
 
 
-export const Container = styled.div`
+const Container = styled.div`
 max-height: 70vh;
 overflow-y: scroll;
 ::-webkit-scrollbar{
