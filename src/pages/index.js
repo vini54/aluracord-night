@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import appConfig from "../../config.json";
-import styled from 'styled-components';
 import githubApi from "../services/githubApi"
 import Link from "next/link";
+import styles from "../../styles/home.module.css"
 
 
 export default function Home() {
@@ -25,11 +25,11 @@ export default function Home() {
 	}, [username])
 
 	return (
-		<Container>
+		<div className={styles.Container}>
 			{/* Formulário */}
 			<Box
 				as="form"
-				className="form"
+				className={styles.form}
 				styleSheet={{
 					width: { xs: "100%", sm: "50%" },
 				}}>
@@ -38,7 +38,8 @@ export default function Home() {
 
 				<Text
 					variant="body3"
-					className="box--titleSpan"
+					className={styles.boxTitleSpan}
+					styleSheet={{color: appConfig.theme.colors.neutrals[300],}}
 				>
 					{appConfig.name}
 				</Text>
@@ -71,28 +72,32 @@ export default function Home() {
 			{/* Formulário */}
 
 			{/* Photo Area */}
-			<Box className="photo" >
+			<Box className={styles.photo} styleSheet={{backgroundColor: appConfig.theme.colors.neutrals[800], borderColor: appConfig.theme.colors.neutrals[999],}} >
 				<Image
-					className="photo--image"
+					className={styles.photoImage}
 					src={avatar}
 					alt="avatar"
 				/>
-				<div className="photo--altDiv">
+				<div className={styles.photoAltDiv}>
 					<Text
 						variant="body4"
-						className="photo--alt"
+						className={styles.photoAlt}
+						styleSheet={{color: appConfig.theme.colors.neutrals[200], backgroundColor: appConfig.theme.colors.neutrals[900],}}
 					>
 						{username}
 					</Text>
 					<Link href={"/" + username}>
-						<a className="photo--alt">
+						<a 
+							className={styles.photoAlt} 
+							style={{color: appConfig.theme.colors.neutrals[200], backgroundColor: appConfig.theme.colors.neutrals[900],}}
+						>
 							🔗Repositórios
 						</a>
 					</Link>
 				</div>
 			</Box>
 			{/* Photo Area */}
-		</Container>
+		</div>
 	);
 }
 
@@ -111,67 +116,3 @@ function Titulo(props) {
 		</>
 	);
 }
-
-export const Container = styled.div`
-
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 10px;
-width: 100%;
-
-@media screen and (max-width: 480px){
-   flex-direction: column;
-}
-
-.box--titleSpan{
-	margin-bottom: 32px;
-	color: ${appConfig.theme.colors.neutrals[300]};
-}
-
-.photo{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	max-width: 200px;
-	padding: 16px;
-	background-color: ${appConfig.theme.colors.neutrals[800]};
-	border: 1px solid;
-	border-color: ${appConfig.theme.colors.neutrals[999]};
-	border-radius: 10px;
-	flex: 1;
-	min-height: 240px;
-}
-
-.photo--image{
-	border-radius: 50%;
-	margin-bottom: 16px;
-}
-.photo--altDiv{
-	display: flex;
-	gap: 10px;
-}
-.photo--alt{
-	color: ${appConfig.theme.colors.neutrals[200]};
-	background-color: ${appConfig.theme.colors.neutrals[900]};
-	padding: 3px 10px;
-	border-radius: 1000px;
-}
-a.photo--alt{
-	text-decoration: none;
-	font-size: 12px;
-   font-weight: 400;
-}
-.photo--alt:nth-child(2){
-	cursor: pointer;
-}
-
-.form{
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   text-align: center;
-   margin-bottom: 32px;
-}
-`;

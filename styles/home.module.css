@@ -1,0 +1,61 @@
+
+.Container{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+   width: 100%;
+}
+
+@media screen and (max-width: 480px){
+   .Container{
+      flex-direction: column;
+   }
+}
+
+.boxTitleSpan{
+	margin-bottom: 32px;
+}
+
+.photo{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 200px;
+	padding: 16px;
+	border: 1px solid;
+	border-radius: 10px;
+	flex: 1;
+	min-height: 240px;
+}
+
+.photoImage{
+	width: 100%;
+	border-radius: 50%;
+	margin-bottom: 16px;
+}
+.photoAltDiv{
+	display: flex;
+	gap: 10px;
+}
+.photoAlt{
+	padding: 3px 10px;
+	border-radius: 1000px;
+}
+a.photoAlt{
+	text-decoration: none;
+	font-size: 12px;
+   font-weight: 400;
+}
+.photoAlt:nth-child(2){
+	cursor: pointer;
+}
+
+.form{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   margin-bottom: 32px;
+}

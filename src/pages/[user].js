@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import styled from 'styled-components';
 import githubApi from '../services/githubApi';
 import appConfig from "../../config.json";
 import { Icon } from '@skynexui/components';
 import Link from 'next/link';
+import styles from '../../styles/user.module.css'
 
 export default function User() {
    const router = useRouter()
@@ -28,11 +28,11 @@ export default function User() {
    }, [router.isReady])
 
    return (
-      <Container>
+      <div className={styles.container}>
          {load ? "" : 
          <>
-            <Link href="/">
-               <div className="head">
+            <Link href="/" passHref>
+               <div className={styles.head} style={{color: appConfig.theme.colors.neutrals[200],}}>
                <Icon
                   label="Icon Component"
                   name="FaArrowLeft"
@@ -42,51 +42,16 @@ export default function User() {
             </Link>
             <ul>
                {repos.map((repo) => {
-                  return <li key={repo.id}><a href={repo.html_url} target="_blank" rel="noreferrer">{repo.name}</a></li>
+                  return <li 
+                           key={repo.id}
+                           style={{backgroundColor: appConfig.theme.colors.neutrals[600],}}>
+                              <a href={repo.html_url} target="_blank" rel="noreferrer" style={{color: appConfig.theme.colors.neutrals[300],}}>   {repo.name}
+                              </a>
+                           </li>
                })}
             </ul>
          </>
          }
-      </Container>
+      </div>
    )
 }
-
-
-const Container = styled.div`
-max-height: 70vh;
-overflow-y: scroll;
-::-webkit-scrollbar{
-   display: none;
-}
-.head{
-   margin: 10px 0 20px;
-   display: flex;
-   justify-content: flex-start;
-   align-items: center;
-   gap: 10px;
-   cursor: pointer;
-   color: ${appConfig.theme.colors.neutrals[200]};
-}
-   ul{
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      li{
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         padding: 10px;
-         background-color: ${appConfig.theme.colors.neutrals[600]};
-         border-radius: 5px;
-         width: 30%;
-         font-size: 20px;
-         word-wrap: break-word;
-         a{
-            text-align: center;
-            text-decoration: none;
-            color: ${appConfig.theme.colors.neutrals[300]};
-         }
-      }
-   }
-`;

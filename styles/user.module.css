@@ -1,0 +1,36 @@
+
+.container{
+   max-height: 70vh;
+   overflow-y: scroll;
+}
+.container::-webkit-scrollbar{
+   display: none;
+}
+.head{
+   margin: 10px 0 20px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   gap: 10px;
+   cursor: pointer;
+}
+.container ul{
+   display: flex;
+   justify-content: space-between;
+   flex-wrap: wrap;
+   gap: 10px;
+}
+.container ul li{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 10px;
+   border-radius: 5px;
+   width: 30%;
+   font-size: 20px;
+   word-wrap: break-word;
+}
+.container ul li a{
+   text-align: center;
+   text-decoration: none;
+}
