@@ -4,11 +4,13 @@ import appConfig from "../../config.json";
 import githubApi from "../services/githubApi"
 import Link from "next/link";
 import styles from "../../styles/home.module.css"
+import { useRouter } from "next/router";
 
 
 export default function Home() {
 	const [username, setUsername] = React.useState("vini54");
 	const [avatar, setAvatar] = React.useState("/defaultAvatar.png");
+	const router = useRouter()
 
 	React.useEffect(() => {
 		setAvatar("/defaultAvatar.png")
@@ -18,11 +20,16 @@ export default function Home() {
 				setAvatar(data.avatar_url)
 			})
 			.catch((error) => {
-				console.log(error)
+				// console.log(error)
 				setAvatar("/defaultAvatar.png")
 			})
 		}
 	}, [username])
+
+	const handleEnter = (e) => {
+		e.preventDefault()
+		router.push(`/chat/${username}`)
+	}
 
 	return (
 		<div className={styles.Container}>
@@ -59,6 +66,7 @@ export default function Home() {
 				/>
 				<Button
 					type="submit"
+					onClick={(e) => {handleEnter(e)}}
 					label="Entrar"
 					fullWidth
 					buttonColors={{
