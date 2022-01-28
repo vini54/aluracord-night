@@ -3,54 +3,89 @@ import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import appConfig from "../../../config.json";
 import styles from "../../../styles/chat.module.css";
 import { useRouter } from "next/router";
-import githubApi from '../../services/githubApi';
+import githubApi from "../../services/githubApi";
+import { createClient } from "@supabase/supabase-js";
+
+const SUPABASE_ANON_KEY =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQwMzIyNywiZXhwIjoxOTU4OTc5MjI3fQ.ooZ5pu6DNuAG_do2C_V7OCw8Fp-0o3Q-dY9zDbjA3Vc";
+const SUPABASE_URL = "https://poolatunfvedurzrxtss.supabase.co";
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function Chat() {
 	const [mensagem, setMensagem] = React.useState("");
 	const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
-	const [avatarUrl, setAvatarUrl] = React.useState('')
-	const router = useRouter()
+	const [avatarUrl, setAvatarUrl] = React.useState("");
+	const router = useRouter();
 
-	const {user} = router.query
+	const { user } = router.query;
 
+	// get username from home input
 	React.useEffect(() => {
-      if(!router.isReady) return;
-      githubApi.get(`/${user}`)
-      .then(({data}) => {
-			setAvatarUrl(data.avatar_url)
-      })
-      .catch((error) => {
-         console.log(error)
-      })
-   }, [router.isReady])
+		if (!router.isReady) return;
+		githubApi
+			.get(`/${user}`)
+			.then(({ data }) => {
+				setAvatarUrl(data.avatar_url);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [router.isReady]);
+
+	// get supabase table
+	React.useEffect(() => {
+		supabaseClient
+			.from("mensagens")
+			.select("*")
+			.order("id", { ascending: false })
+			.then(({ data }) => {
+				console.log(data);
+				setListaDeMensagens(data);
+			});
+	}, []);
 
 	function handleNovaMensagem(novaMensagem) {
 		const mensagem = {
-			id: listaDeMensagens.length + 1,
 			de: user,
 			texto: novaMensagem,
 		};
 
-		setListaDeMensagens([mensagem, ...listaDeMensagens]);
+		supabaseClient
+			.from("mensagens")
+			.insert([mensagem])
+			.then(({ data }) => {
+				setListaDeMensagens([data[0], ...listaDeMensagens]);
+			});
 		setMensagem("");
 	}
 
-   const removeItem = (id) => {
-      setListaDeMensagens((existingItens) => {
-         return existingItens.filter((item) => item.id !== id)
-      })
-   }
+	const removeItem = async (id) => {
+		const { error } = await supabaseClient
+			.from("mensagens")
+			.delete()
+			.eq("id", id);
+		if (!error) {
+			setListaDeMensagens((existingItens) => {
+				return existingItens.filter((item) => item.id !== id);
+			});
+		}
+	};
 
 	return (
 		<Box className={styles.container}>
 			<Header />
 			<Box
-         className={styles.main}
+				className={styles.main}
 				styleSheet={{
 					backgroundColor: appConfig.theme.colors.neutrals[600],
 				}}
 			>
-				<MessageList avatar={avatarUrl} user={user} mensagens={listaDeMensagens} removeItem={removeItem} />
+				<MessageList
+					avatar={avatarUrl}
+					user={user}
+					mensagens={listaDeMensagens}
+					removeItem={removeItem}
+				/>
 				<Box
 					as="form"
 					styleSheet={{
@@ -93,7 +128,12 @@ function Header() {
 	return (
 		<>
 			<Box className={styles.header}>
-				<Text variant="heading5" styleSheet={{color: appConfig.theme.colors.neutrals[100],}}>Chat</Text>
+				<Text
+					variant="heading5"
+					styleSheet={{ color: appConfig.theme.colors.neutrals[100] }}
+				>
+					Chat
+				</Text>
 				<Button
 					variant="tertiary"
 					colorVariant="neutral"
@@ -106,11 +146,11 @@ function Header() {
 }
 
 function MessageList(props) {
-   const {removeItem, avatar} = props
+	const { removeItem, avatar } = props;
 	return (
 		<Box
 			tag="ul"
-         className={styles.messageList}
+			className={styles.messageList}
 			styleSheet={{
 				color: appConfig.theme.colors.neutrals["000"],
 			}}
@@ -156,26 +196,26 @@ function MessageList(props) {
 								{new Date().toLocaleDateString()}
 							</Text>
 						</Box>
-                  <Box
-                     styleSheet={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                     }}
-                  >
-                     <p>{mensagem.texto}</p>
-                     <Image
-                        styleSheet={{
-                           width: "20px",
-                           height: "20px",
-                           borderRadius: "50%",
-                           display: "inline-block",
-                           marginLeft: "auto",
-                           cursor: "pointer",
-                        }}
-                        src={`/close_white_24dp.svg`}
-                        onClick={() => removeItem(mensagem.id)}
-                     />
-                  </Box>
+						<Box
+							styleSheet={{
+								display: "flex",
+								justifyContent: "space-between",
+							}}
+						>
+							<p>{mensagem.texto}</p>
+							<Image
+								styleSheet={{
+									width: "20px",
+									height: "20px",
+									borderRadius: "50%",
+									display: "inline-block",
+									marginLeft: "auto",
+									cursor: "pointer",
+								}}
+								src={`/close_white_24dp.svg`}
+								onClick={() => removeItem(mensagem.id)}
+							/>
+						</Box>
 					</Text>
 				);
 			})}
